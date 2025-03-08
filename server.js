@@ -58,6 +58,48 @@ app.get('/getStudent/:name', (req, res) => {
     })
 });
 
+app.put('/updateStudent/:name', (req, res) => {
+    student.findOneAndUpdate({name:req.params.name}, req.body)
+    .then((student)=>{
+        if(student){
+            res.status(200).json({
+                "message":"Student updated",
+                "student":student
+            });
+        }
+        else{
+            res.status(404).json({
+                "message":"Student not found"
+            });
+        }
+        
+    })
+    .catch((err)=>{
+        res.status(400).json({message:'Student not updated'});
+    })
+});
+
+app.delete('/deleteStudent/:name', (req, res) => {
+    student.findOneAndDelete({name:req.params.name})
+    .then((student)=>{
+        if(student){
+            res.status(200).json({
+                "message":"Student deleted",
+                "student":student
+            });
+        }
+        else{
+            res.status(404).json({
+                "message":"Student not found"
+            });
+        }
+        
+    })
+    .catch((err)=>{
+        res.status(400).json({message:'Student not deleted'});
+    })
+});
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
